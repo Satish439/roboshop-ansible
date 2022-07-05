@@ -1,0 +1,35 @@
+- name: copy Mongodb YUM repo files
+  ansible.builtin.template:
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongodb.repo
+
+- name: Install MongoDB
+  ansible.builtin.yum:
+    name: mongodb-org
+    state: installed
+
+- name: Replace listen address in Mongodb configuration file
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1'
+    replace: '0.0.0.0'
+
+- name: start Mongodb service
+  ansible.builtin.systemd:
+    name: monogod
+    state: restarted
+    enabled: yes
+
+- name: download and extract {{COMPONENT}} component Archive
+  ansible.builtin.unarchive:
+    src:
+    dest: /tmp
+    remote_src: yes
+
+- name: load schema
+  community.mongodb.mongodb_shell:
+    file: "/tmp/mongodb-main/{{item}.js"
+    idempotent: yes
+  loop:
+    - catalogue
+    - users
