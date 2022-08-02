@@ -2,6 +2,9 @@
  #ansible.builtin.get_url:
    #url: https://github.com/roboshop-devops-project/{{COMPONENT}}/archive/main.zip
    #dest: /tmp/{{COMPONENT}}.zip
+- name: Create Application user
+  ansible.builtin.user:
+    name: roboshop
 
 - name: Remove App code
   ansible.builtin.file:
