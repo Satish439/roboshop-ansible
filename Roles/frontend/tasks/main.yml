@@ -3,5 +3,13 @@
     name: nginx
     state: installed
 
+- name: Import common role for code download {{COMPONENT}} code
+  ansible.builtin.inculde_role:
+    name: common
+    tasks_from: download
 
-
+- name: start Nginx service
+  ansible.builtin.systemd:
+    name: nginx
+    state: started
+    enable: yes
