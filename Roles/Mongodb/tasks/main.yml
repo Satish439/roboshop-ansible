@@ -1,35 +1,36 @@
-- name: copy Mongodb YUM repo files
-  ansible.builtin.template:
+- name: copy the manogodb repo files
+  ansible.builtin.templates:
     src: mongodb.repo
     dest: /etc/yum.repos.d/mongodb.repo
 
-- name: Install MongoDB
+- name: install MongoDB
   ansible.builtin.yum:
     name: mongodb-org
     state: installed
 
-- name: Replace listen address in Mongodb configuration file
+- name: replace listen address in mongodb config file
   ansible.builtin.replace:
     path: /etc/mongod.conf
-    regexp: '127.0.0.1'
+    regexp: '127.0.0.1
     replace: '0.0.0.0'
 
-- name: start Mongodb service
+- name: start the mongodb service
   ansible.builtin.systemd:
-    name: monogod
-    state: restarted
-    enabled: yes
+    name: mongod
+    state: started
+    enable: yes
 
-- name: download and extract {{COMPONENT}} component Archive
+- name: download and Extract {{COMPONENT}} component archive
   ansible.builtin.unarchive:
-    src:
+    src: ttps://github.com/roboshop-devops-project/{{COMPONENT}}/archive/main.zip
     dest: /tmp
     remote_src: yes
 
-- name: load schema
+- name: load the schema
   community.mongodb.mongodb_shell:
-    file: "/tmp/mongodb-main/{{item}.js"
+    file: "/tmp/mongodb-main/{{item}}.js"
     idempotent: yes
   loop:
     - catalogue
     - users
+
