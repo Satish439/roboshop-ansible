@@ -1,0 +1,47 @@
+- name: Run Frontend setup
+  hosts: FRONTEND
+  become: yes
+  roles
+    - "forntned"
+
+- name: Run Frontend setup
+  hosts: MONGODB
+  become: yes
+  roles
+  - "cart"
+
+- name: Run catalogue
+  hosts: Catalogue
+  become: yes
+  roles:
+    -"catalogue"
+
+- name: Run Mangodb
+  hosts: MONGODB
+  roles:
+    - "mongodb"
+
+- name: Run user
+  hosts: USER
+  become: yes
+  roles:
+    - "user"
+- name: Run redis
+  hosts: REDIS
+  become: yes
+  roles:
+    - "redis"
+### we can also call all roles as below too using loop###
+### loop is not going to work at play level, it will work only at task level.
+### Below won't work as it at play level###
+-
+- name: run all roles
+  hosts: "{{item.HOST}}"
+  become: yes
+  roles:
+    - "{{items.role}}"
+  loop:
+    - {HOST: "FORNTEND", role: "frontend"}
+    - {HOST: "USER", role: "user"}
+    - {HOST: "CART", role:"cart"}
+    -
