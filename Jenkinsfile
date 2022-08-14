@@ -14,6 +14,9 @@ pipeline {
     string(name: 'COMPONENT', defaultValue: '', description: 'Which Component to run the pipeline')
   }
 
+   triggers { pollSCM('* * * * *')}
+
+
   stages {
     stage('Ansible Playbook') {
       steps {
