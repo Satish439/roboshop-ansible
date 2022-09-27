@@ -1,0 +1,11 @@
+- name: Prometheus server Setup
+  ansible.builtin.include_role:
+    name: prometheus
+    task_from: server
+  when: SETUP_TYPE == "server"
+
+- name: Prometheus server Setup
+  ansible.builtin.include_role:
+    name: prometheus
+    task_from: server
+  when: SETUP_TYPE == "client"

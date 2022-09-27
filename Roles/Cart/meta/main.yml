@@ -1,0 +1,6 @@
+//adding dependencies meta to install for apllication before//
+
+- role: common
+- role: prometheus
+  vars:
+    SETUP_TYPE: client
